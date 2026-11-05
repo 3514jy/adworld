@@ -5,7 +5,8 @@ import { MEDIA_OPTIONS } from '../data/site'
 const HCaptcha = lazy(() => import('@hcaptcha/react-hcaptcha'))
 
 const ENDPOINT = 'https://api.web3forms.com/submit'
-const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY
+// Web3Forms 공개용 키 (기존 사이트와 동일). 브라우저에 노출되는 용도의 키이며, .env에 다른 키를 넣으면 그것이 우선
+const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || '6f7012ff-1770-43bc-a5d8-d36169d62f5b'
 // hCaptcha 사이트키(공개용 키). .env에 없으면 Web3Forms 무료 플랜 공용 키를 사용 (Web3Forms 문서 기준)
 const HCAPTCHA_SITEKEY = import.meta.env.VITE_HCAPTCHA_SITEKEY || '50b2fe65-b00b-4b9e-ad62-3ba471098be2'
 
