@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import Icon from './Icon'
+import { asset } from '../lib/asset'
 import { COMPANY, MEDIA_NAV } from '../data/site'
 
 const navClass = ({ isActive }) =>
@@ -18,7 +19,7 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-bg/85 backdrop-blur-2xl border-b border-line">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-6 flex items-center justify-between h-16 sm:h-[72px]">
         <Link to="/" className="flex items-center" aria-label="애드월드 홈">
-          <img alt="애드월드" className="h-10 sm:h-12 w-auto" src="/images/logo-new.png" />
+          <img alt="애드월드" className="h-10 sm:h-12 w-auto" src={asset("/images/logo-new.png")} />
         </Link>
 
         <nav className="hidden md:flex items-center gap-6" aria-label="주 메뉴">
@@ -45,7 +46,7 @@ export default function Header() {
           <NavLink to="/process" className={navClass}>진행절차</NavLink>
           <NavLink to="/contact" className={navClass}>상담문의</NavLink>
           <NavLink to="/history" className={navClass}>회사연혁</NavLink>
-          <a href={COMPANY.brochure} target="_blank" rel="noopener noreferrer" className="bg-gold text-on-accent px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-gold-light transition-colors flex items-center gap-1.5">
+          <a href={asset(COMPANY.brochure)} target="_blank" rel="noopener noreferrer" className="bg-gold text-on-accent px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-gold-light transition-colors flex items-center gap-1.5">
             <Icon name="Download" size={14} />회사 소개서
           </a>
         </nav>
@@ -80,7 +81,7 @@ export default function Header() {
               </li>
             ))}
           </ul>
-          <a href={COMPANY.brochure} target="_blank" rel="noopener noreferrer" className="bg-gold text-on-accent px-5 py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-1.5">
+          <a href={asset(COMPANY.brochure)} target="_blank" rel="noopener noreferrer" className="bg-gold text-on-accent px-5 py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-1.5">
             <Icon name="Download" size={14} />회사 소개서
           </a>
         </nav>

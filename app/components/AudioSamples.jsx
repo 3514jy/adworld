@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Icon from './Icon'
+import { asset } from '../lib/asset'
 
 // 음성광고 샘플 — 한 번에 하나만 재생
 export default function AudioSamples({ items }) {
@@ -16,7 +17,7 @@ export default function AudioSamples({ items }) {
       setPlaying(null)
       return
     }
-    audio.src = src
+    audio.src = asset(src)
     audio.play().then(() => setPlaying(src)).catch(() => setPlaying(null))
   }
 

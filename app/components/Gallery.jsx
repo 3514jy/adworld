@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import Icon from './Icon'
+import { asset } from '../lib/asset'
 
 function Label({ children, className = '' }) {
   return (
@@ -13,7 +14,7 @@ function Thumb({ image, wide, onOpen }) {
   return (
     <button type="button" onClick={onOpen} className={`cursor-pointer group text-left ${wide ? 'col-span-full' : ''}`} aria-label={`${image.alt} 크게 보기`}>
       <div className={`${wide ? 'aspect-[5/1]' : 'aspect-[4/3]'} rounded-lg border border-white/20 overflow-hidden bg-white/10 group-hover:border-gold/60 transition-colors`}>
-        <img alt={image.alt} loading="lazy" className="w-full h-full object-contain" src={image.src} />
+        <img alt={image.alt} loading="lazy" className="w-full h-full object-contain" src={asset(image.src)} />
       </div>
       <p className="text-[11px] sm:text-xs text-gold mt-1 sm:mt-1.5 text-center truncate font-medium">{image.alt}</p>
     </button>
@@ -98,7 +99,7 @@ export function Lightbox({ images, index, onClose, onMove }) {
         </button>
       )}
       <figure className="max-w-full" onClick={(e) => e.stopPropagation()}>
-        <img src={img.src} alt={img.alt} className="max-h-[80vh] sm:max-h-[85vh] w-auto mx-auto rounded-lg" />
+        <img src={asset(img.src)} alt={img.alt} className="max-h-[80vh] sm:max-h-[85vh] w-auto mx-auto rounded-lg" />
         <figcaption className="text-center text-white/70 text-sm mt-3">
           {img.alt}{multi && ` (${index + 1} / ${images.length})`}
         </figcaption>

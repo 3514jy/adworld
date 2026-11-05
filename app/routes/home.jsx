@@ -5,6 +5,7 @@ import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import CtaBanner from '../components/CtaBanner'
 import { seo } from '../lib/seo'
+import { asset } from '../lib/asset'
 import { COMPANY, HERO_CARDS, MARQUEE_WORDS, ABOUT_CARDS, ABOUT_BADGES, KEY_NUMBERS } from '../data/site'
 
 export const meta = () =>
@@ -22,7 +23,7 @@ const letter = { hidden: { opacity: 0, y: 40, rotateX: -60 }, show: { opacity: 1
 
 function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[url('/images/hero-bg.png')] bg-center bg-cover bg-no-repeat">
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url('${asset('/images/hero-bg.png')}')` }}>
       <div className="absolute inset-0 bg-gradient-to-b from-bg/75 via-bg/90 to-bg z-0" />
       <div className="relative z-10 max-w-[1200px] mx-auto w-full px-5 sm:px-6 pt-[120px] sm:pt-[140px] pb-16 sm:pb-24 flex flex-col flex-1 justify-center">
         <div className="text-center mb-10 sm:mb-14" style={{ perspective: 600 }}>

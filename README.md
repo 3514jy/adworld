@@ -49,11 +49,24 @@ git remote add origin https://github.com/<아이디>/adworld.git
 git push -u origin main
 ```
 
-## 시안 주소 만들기 (Vercel)
+## 시안 주소 (GitHub Pages)
+
+https://3514jy.github.io/adworld/
+
+`main`에 push하면 `.github/workflows/deploy-pages.yml`이 `/adworld/` 기준으로 빌드해서 자동으로 올립니다.
+처음 한 번만: 저장소 Settings → Pages → Source를 **GitHub Actions**로 지정 (저장소가 Public이어야 무료)
+
+## 직접 호스팅에 올릴 때
+
+1. (선택) `.env`에 `VITE_SITE_URL=https://www.adworld.or.kr`
+2. `npm run build`
+3. `build/client` 폴더 **안의 파일들**을 호스팅 루트에 업로드
+
+## 시안 주소 만들기 (Vercel, 선택)
 
 1. vercel.com 에 GitHub 계정으로 로그인 → Add New → Project → 저장소 선택
 2. Environment Variables에 추가
-   - `VITE_WEB3FORMS_KEY` : Web3Forms 키
+   - `VITE_WEB3FORMS_KEY` : (선택) 다른 Web3Forms 키를 쓸 때만. 비우면 코드에 있는 기존 키 사용
    - `VITE_SITE_URL` : 배포된 주소 (예: `https://adworld-xxxx.vercel.app`) — 처음엔 비워두고 배포 후 주소를 넣고 Redeploy
 3. Deploy → 나온 주소를 친구분께 공유
 

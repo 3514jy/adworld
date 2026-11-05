@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import Icon from './Icon'
+import { asset } from '../lib/asset'
 import { COMPANY, MEDIA_NAV } from '../data/site'
 
 export default function Footer() {
@@ -8,7 +9,7 @@ export default function Footer() {
       <div className="max-w-[1200px] mx-auto px-5 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-12 mb-8 sm:mb-12">
           <div>
-            <img alt="애드월드" className="h-12 w-auto mb-2" src="/images/logo-new.png" />
+            <img alt="애드월드" className="h-12 w-auto mb-2" src={asset("/images/logo-new.png")} />
             <p className="text-sm text-dim leading-relaxed">
               부산 오프라인 광고 전문<br /><span className="text-gold font-medium">원스톱 파트너</span>
             </p>

@@ -1,0 +1,59 @@
+# main 브랜치에 올릴 때마다 사이트를 빌드해서 GitHub Pages(https://3514jy.github.io/adworld/)에 올림
+# 처음 한 번: 저장소 Settings → Pages → Source를 "GitHub Actions"로 지정해야 함
+name: GitHub Pages 배포
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: 빌드 (/adworld/ 기준)
+        run: npm run build
+        env:
+          BASE_PATH: /adworld/
+          VITE_SITE_URL: https://3514jy.github.io/adworld
+
+      # 프리렌더된 페이지가 build/client/adworld/ 안에 생기므로 한 단계 위로 올림
+      # (Pages가 이미 /adworld/ 아래에서 서빙하기 때문)
+      # + 없는 주소로 들어왔을 때도 사이트 화면이 뜨도록 404.html 생성
+      - name: 페이지 위치 정리
+        run: |
+          cp -r build/client/adworld/. build/client/
+          rm -rf build/client/adworld
+          cp build/client/__spa-fallback.html build/client/404.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/client
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
