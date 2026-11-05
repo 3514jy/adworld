@@ -17,7 +17,6 @@ const EMPTY = { name: '', phone: '', company: '', media: '', message: '' }
 export default function ContactForm() {
   const [mounted, setMounted] = useState(false)
   const [form, setForm] = useState(EMPTY)
-  const [token, setToken] = useState('')
   const [status, setStatus] = useState({ type: 'idle', msg: '' })
   const captchaRef = useRef(null)
   const honeypot = useRef(null)
@@ -34,12 +33,19 @@ export default function ContactForm() {
       setStatus({ type: 'error', msg: '상담 접수 설정이 아직 완료되지 않았습니다. 전화로 문의해 주세요.' })
       return
     }
-    if (!token) {
-      setStatus({ type: 'error', msg: '"사람입니다" 확인을 완료한 뒤 다시 눌러 주세요.' })
+    setStatus({ type: 'sending', msg: '' })
+
+    // 기존 사이트와 같이 보이지 않는 hCaptcha: 체크박스 없이 전송 버튼을 누를 때 백그라운드에서 확인
+    // (의심스러운 경우에만 hCaptcha가 문제를 띄움)
+    let token = ''
+    try {
+      if (!captchaRef.current) throw new Error('captcha not ready')
+      token = (await captchaRef.current.execute({ async: true })).response
+    } catch {
+      setStatus({ type: 'error', msg: '보안 확인이 완료되지 않았습니다. 다시 한 번 눌러 주세요.' })
       return
     }
 
-    setStatus({ type: 'sending', msg: '' })
     try {
       const res = await fetch(ENDPOINT, {
         method: 'POST',
@@ -64,7 +70,6 @@ export default function ContactForm() {
     } catch {
       setStatus({ type: 'error', msg: '접수 중 문제가 생겼습니다. 잠시 후 다시 시도하시거나 전화로 문의해 주세요.' })
     } finally {
-      setToken('')
       captchaRef.current?.resetCaptcha()
     }
   }
@@ -102,13 +107,11 @@ export default function ContactForm() {
         <textarea id="cf-message" required maxLength={2000} placeholder="문의하실 내용을 자유롭게 작성해주세요." className={`${field} resize-y min-h-[100px] sm:min-h-[120px]`} value={form.message} onChange={set('message')} />
       </div>
 
-      <div className="mb-3 min-h-[78px]">
-        {mounted && (
-          <Suspense fallback={null}>
-            <HCaptcha ref={captchaRef} sitekey={HCAPTCHA_SITEKEY} languageOverride="ko" reCaptchaCompat={false} onVerify={setToken} onExpire={() => setToken('')} />
-          </Suspense>
-        )}
-      </div>
+      {mounted && (
+        <Suspense fallback={null}>
+          <HCaptcha ref={captchaRef} sitekey={HCAPTCHA_SITEKEY} size="invisible" theme="dark" languageOverride="ko" reCaptchaCompat={false} />
+        </Suspense>
+      )}
 
       <button type="submit" disabled={sending} className="w-full bg-gold text-on-accent py-3 sm:py-4 rounded-[10px] font-bold text-sm sm:text-base hover:bg-gold-light transition-all mt-1 sm:mt-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
         {sending ? '접수 중...' : '상담 신청하기'}
